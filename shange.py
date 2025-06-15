@@ -18,7 +18,7 @@ def image_to_occupancy_grid(image_path, threshold=127):
     return occupancy_grid
 
 if __name__ == "__main__":
-    img_path = "C:\\Users\\24816\\Desktop\\comprehensive project\\map.png"  # 你的图片路径
+    img_path = "C:\\Users\\24816\\Desktop\\comprehensive project\\map_cropped_inner_region.png"  # 你的图片路径
     occupancy_grid = image_to_occupancy_grid(img_path)
     print("障碍栅格大小:", occupancy_grid.shape)
     print(occupancy_grid)

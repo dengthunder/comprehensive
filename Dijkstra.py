@@ -40,7 +40,7 @@ if __name__ == "__main__":
     filename = r"C:/Users/24816/Desktop/comprehensive project/occupancy_grid.txt"
     grid_map = load_grid_from_txt(filename)
 
-    start = (30, 30)  # 起点，左上角
+    start = (2, 2)  # 起点，左上角
     goal = (len(grid_map) - 1, len(grid_map[0]) - 1)  # 终点，右下角
 
     path = dijkstra(grid_map, start, goal)
