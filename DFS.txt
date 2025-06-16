@@ -1,0 +1,113 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ---------- 地图加载 ----------
+def load_grid_from_txt(filename):
+    grid = []
+    with open(filename, 'r') as f:
+        for line in f:
+            grid.append(list(map(int, line.strip().split())))
+    return grid
+
+# ---------- 地图降采样 ----------
+def downsample_map(original_map, factor=2):
+    h, w = len(original_map), len(original_map[0])
+    original_map_np = np.array(original_map)
+    new_h, new_w = h // factor, w // factor
+    downsampled_map = np.zeros((new_h, new_w), dtype=int)
+
+    for i in range(new_h):
+        for j in range(new_w):
+            block = original_map_np[i*factor:(i+1)*factor, j*factor:(j+1)*factor]
+            downsampled_map[i, j] = 1 if np.any(block == 1) else 0
+
+    return downsampled_map.tolist()
+
+# ---------- 非递归DFS全覆盖路径规划，增加step参数控制间距 ----------
+def coverage_path_full_dfs_iterative(grid, start, step=1):
+    directions = [(0, step), (step, 0), (0, -step), (-step, 0)]  # 右、下、左、上，间隔step格
+    h, w = len(grid), len(grid[0])
+    visited = set()
+    path = []
+    stack = [(start, 0)]  # (位置, 下一方向索引)
+    visited.add(start)
+
+    while stack:
+        current, dir_idx = stack[-1]
+        if dir_idx < 4:
+            dx, dy = directions[dir_idx]
+            nx, ny = current[0] + dx, current[1] + dy
+            stack[-1] = (current, dir_idx + 1)
+
+            if 0 <= nx < h and 0 <= ny < w and grid[nx][ny] == 0 and (nx, ny) not in visited:
+                visited.add((nx, ny))
+                stack.append(((nx, ny), 0))
+        else:
+            popped, _ = stack.pop()
+            path.append(popped)
+
+    path.reverse()
+    return path
+
+# ---------- 逐步绘制路径过程 ----------
+def visualize_path_step_by_step(grid, path, pause_time=0.001):
+    grid_show = [[1 if cell == 1 else 0 for cell in row] for row in grid]
+
+    plt.ion()  # 开启交互模式
+    fig, ax = plt.subplots()
+    ax.imshow(grid_show, cmap='Greys', origin='upper')
+
+    path_x, path_y = [], []
+
+    for i, (x, y) in enumerate(path):
+        path_x.append(y)
+        path_y.append(x)
+
+        ax.clear()
+        ax.imshow(grid_show, cmap='Greys', origin='upper')
+        ax.plot(path_x, path_y, color='blue', linewidth=1)
+        ax.scatter(path_x[0], path_y[0], color='green', label='Start')
+        ax.scatter(path_x[-1], path_y[-1], color='red', label='Current')
+
+        ax.set_title(f"路径绘制过程：{i+1}/{len(path)} 点")
+        ax.legend(loc='upper right')
+
+        plt.pause(pause_time)
+
+    # 最后把终点标成红色
+    ax.scatter(path_x[-1], path_y[-1], color='red', label='End')
+    ax.legend()
+    plt.ioff()  # 关闭交互模式
+    plt.show()
+
+
+# ---------- 主程序 ----------
+if __name__ == "__main__":
+    filename = r"C:\Users\24816\Desktop\comprehensive project\occupancy_grid.txt"
+    grid = load_grid_from_txt(filename)
+    downsample_factor = 2
+
+    # 地图降采样
+    grid = downsample_map(grid, factor=downsample_factor)
+
+    # 起点选择
+    start = (1, 1)
+    if grid[start[0]][start[1]] == 1:
+        found = False
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 0:
+                    start = (i, j)
+                    found = True
+                    break
+            if found:
+                break
+
+    step = 2  # 设置路径覆盖的间距为2
+    path = coverage_path_full_dfs_iterative(grid, start, step=step)
+
+    print(f"覆盖点总数: {len(path)}")
+    for p in path:
+        print(p)
+
+    visualize_path_step_by_step(grid, path, pause_time=0.05)
