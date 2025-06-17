@@ -106,9 +106,9 @@ def coverage_path_full_astar(grid, start):
     return path
 
 # ---------- 动态路径可视化 ----------
-def visualize_path_dynamic(grid, path, save_path=None):
+def visualize_path_dynamic(grid, path):
     grid_show = [[1 if cell == 1 else 0 for cell in row] for row in grid]
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(10,10))
 
     path_x = []
     path_y = []
@@ -121,21 +121,18 @@ def visualize_path_dynamic(grid, path, save_path=None):
         plt.imshow(grid_show, cmap='Greys', origin='upper')
         plt.plot(path_x, path_y, color='blue', linewidth=2)
         plt.scatter(path_x[0], path_y[0], color='green', label='Start')
-        plt.scatter(path_x[-1], path_y[-1], color='red', label='Current' if i != len(path) - 1 else 'End')
-        plt.title(f"A* Path Progress: Step {i + 1}/{len(path)}")
+        plt.scatter(path_x[-1], path_y[-1], color='red', label='Current' if i != len(path)-1 else 'End')
+        plt.title(f"A* Path Progress: Step {i+1}/{len(path)}")
         plt.legend()
-        plt.pause(0.005)
+        plt.pause(0.005)  # 暂停0.1秒，控制绘制速度
 
-    if save_path:
-        plt.savefig(save_path, dpi=300)
     plt.show()
-
 
 # ---------- 主程序 ----------
 if __name__ == "__main__":
     filename = r"C:\Users\24816\Desktop\comprehensive project\occupancy_grid.txt"
     grid = load_grid_from_txt(filename)
-    downsample_factor = 4
+    downsample_factor = 6
 
     # 地图降采样
     grid = downsample_map(grid, factor=downsample_factor)
@@ -154,15 +151,9 @@ if __name__ == "__main__":
                 break
 
     path = coverage_path_full_astar(grid, start)
-    # 保存路径到txt文件
-    output_file = r"C:\Users\24816\Desktop\comprehensive project\path_output.txt"
-    with open(output_file, 'w') as f:
-        f.write(f"路径长度: {len(path)}\n")
-        for p in path:
-            f.write(f"{p}\n")
+
     print(f"路径长度: {len(path)}")
     for p in path:
         print(p)
 
-    image_file = r"C:\Users\24816\Desktop\comprehensive project\path_visualization.png"
-    visualize_path_dynamic(grid, path, save_path=image_file)
+    visualize_path_dynamic(grid, path)

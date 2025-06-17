@@ -41,7 +41,7 @@ if __name__ == "__main__":
     grid_map = load_grid_from_txt(filename)
 
     start = (2, 2)  # 起点，左上角
-    goal = (len(grid_map) - 1, len(grid_map[0]) - 1)  # 终点，右下角
+    goal = (len(grid_map) - 2, len(grid_map[0]) - 2)  # 终点，右下角
 
     path = dijkstra(grid_map, start, goal)
 
