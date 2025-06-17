@@ -135,7 +135,7 @@ def visualize_path_dynamic(grid, path, save_path=None):
 if __name__ == "__main__":
     filename = r"C:\Users\24816\Desktop\comprehensive project\occupancy_grid.txt"
     grid = load_grid_from_txt(filename)
-    downsample_factor = 4
+    downsample_factor = 10
 
     # 地图降采样
     grid = downsample_map(grid, factor=downsample_factor)

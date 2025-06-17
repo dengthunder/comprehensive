@@ -50,7 +50,7 @@ def main():
         print('✅ 成功连接 CoppeliaSim')
 
         # 获取机器人句柄（修改为你场景中实际名称）
-        err_code, robot_handle = sim.simxGetObjectHandle(clientID, 'Sphere', sim.simx_opmode_blocking)
+        err_code, robot_handle = sim.simxGetObjectHandle(clientID, 'saodiche', sim.simx_opmode_blocking)
         if err_code != 0:
             print('❌ 获取机器人句柄失败！')
             sim.simxFinish(clientID)
