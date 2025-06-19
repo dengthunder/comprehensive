@@ -15,7 +15,7 @@ def load_path_from_file(filename):
             if len(parts) >= 2:
                 try:
                     x, y = float(parts[0]), float(parts[1])
-                    path_points.append((x  / 30.75 * 6 - 10, y / 30.75 * 6))  # 缩小比例
+                    path_points.append((x  / 30.46 * 6 - 10, y / 30.46 * 6))  # 缩小比例
                 except ValueError:
                     print(f"跳过无效行: {line}")
     return path_points
@@ -71,7 +71,7 @@ def main():
         # 循环移动
         for idx, point in enumerate(path_points):
             x_target, y_target = point
-            target_pos = [x_target, y_target, 0.12]  # z轴固定高度
+            target_pos = [x_target, y_target, 0.385]  # z轴固定高度
             print(f'➡️ [{idx+1}] 正在移动到: {target_pos}')
             move_to_position(clientID, robot_handle, current_pos, target_pos, speed=2)
             current_pos = target_pos
