@@ -116,7 +116,7 @@ def visualize_path_dynamic(grid, path, save_path=None):
         path_y.append(p[0])
         plt.cla()  # 清除当前画布
         plt.imshow(grid_show, cmap='Greys', origin='upper')
-        plt.plot(path_x, path_y, color='blue', linewidth=(0.35 / 16.198117188) * 512)
+        plt.plot(path_x, path_y, color='blue', linewidth=(0.35 / 16.198117188) * 492)
         plt.scatter(path_x[0], path_y[0], color='green', label='Start')
         plt.scatter(path_x[-1], path_y[-1], color='red', label='Current' if i != len(path) - 1 else 'End')
         plt.title(f"A* Path Progress: Step {i + 1}/{len(path)}")
