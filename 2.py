@@ -2,6 +2,7 @@ import heapq
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from collections import defaultdict
 
 
 def load_grid_from_txt(filename):
@@ -200,16 +201,21 @@ if __name__ == "__main__":
     car_width_cells = 10.630942091616
     scale_factor = 1.0
     image_file = "path_visualization.png"
-    visited_once = set()
-    repeated = 0
+    # 按访问次数统计每个通行格子
+    point_visit_count = defaultdict(int)
     for p in path:
         if grid[p[0]][p[1]] == 0:
-            if p in visited_once:
-                repeated += 1
-            else:
-                visited_once.add(p)
-    total_path = len(path)
-    repetition_rate = repeated / total_path if total_path > 0 else 0
+            point_visit_count[p] += 1
+
+    # 重复次数（每个点重复访问的次数）
+    repeated = sum(v - 1 for v in point_visit_count.values() if v > 1)
+
+    # 所有访问次数的总和
+    total_path_visits = sum(v for v in point_visit_count.values())
+
+    # 重复率：重复访问次数 ÷ 总访问次数
+    repetition_rate = repeated / total_path_visits if total_path_visits > 0 else 0
+
     coverage_set = get_coverage_set(grid, path, car_width_cells)
     total_free_cells = sum(row.count(0) for row in grid)
     covered = len(coverage_set)

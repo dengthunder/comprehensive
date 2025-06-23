@@ -249,9 +249,9 @@ if __name__ == "__main__":
                 visited_once.add(p)
 
     total_path = len(path)
-    repetition_rate = repeated / total_path if total_path > 0 else 0
-    coverage_set = get_coverage_set(grid, path, car_width_cells)
     total_free_cells = sum(row.count(0) for row in grid)
+    repetition_rate = repeated / total_free_cells if total_path > 0 else 0
+    coverage_set = get_coverage_set(grid, path, car_width_cells)
     covered = len(coverage_set)
     coverage_rate = (covered - repeated) / total_free_cells if total_free_cells > 0 else 0
 
@@ -472,7 +472,6 @@ if __name__ == "__main__":
                 plt.xlabel('X')
                 plt.ylabel('Y')
                 plt.legend()
-                plt.title('机器人路径追踪（实时避障）')
                 plt.grid(True)
                 plt.axis('equal')
                 plt.show()
