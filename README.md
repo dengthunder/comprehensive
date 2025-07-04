@@ -1,0 +1,9 @@
+该项目为我的大三下期末的一个实践：
+实现了全覆盖的扫地机器人，最终性能根据精度会略有变化
+安装好需要的库（可以之间运行观看报错，其会显示缺少的库）
+1.其中shange为将地图进行栅格化的代码，此处应为第一步（前置条件为将sat文件转换为二维拓扑地图，并提取出轮廓）
+2.将栅格化后的地图利用A*算法进行全覆盖路径规划，并将路径点输出到txt
+3.使用python与coppeliasim进行远程联合仿真，其中运动控制为link中的文件
+其中环境建模已经保存在ttt中完成。
+最终打开ttt中的文件，运行coppeliasim_dynamic_replanning.py，之后再coppeliasim中点击运行即可完成仿真，最终会输出路径图，如下：
+![image](https://github.com/user-attachments/assets/af1c71b6-d530-4346-8bb5-b4465b53ee3c)
